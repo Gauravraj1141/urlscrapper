@@ -38,16 +38,20 @@ def link_checker(url):
 
     return valid_links, broken_links
 
+
 def save_links_to_tsv(valid_links, broken_links):
-    with open("links.tsv", "w", newline="") as file:
-        writer = csv.writer(file, delimiter="\t")
-        writer.writerow(["Links", "Status"])
+    try:
+        with open("links.tsv", "w", newline="") as file:
+            writer = csv.writer(file, delimiter="\t")
+            writer.writerow(["Links", "Status"])
 
-        for link in valid_links:
-            writer.writerow([link, "Valid"])
+            for link in valid_links:
+                writer.writerow([link, "Valid"])
 
-        for page_url, broken_link in broken_links:
-            writer.writerow([broken_link, "broken"])
+            for page_url, broken_link in broken_links:
+                writer.writerow([broken_link, "broken"])
+    except Exception as e:
+        return e
 
 
 
@@ -57,7 +61,8 @@ if __name__ == '__main__':
     print(f"Total links checked: {len(valid_links) + len(broken_links)}")
     print(f"Valid links: {len(valid_links)}")
     print(f"Broken links: {len(broken_links)}")
-    # print(valid_links,broken_links)
+    for page_url, broken_link in broken_links:
+        print(f"Broken link found on {page_url}: {broken_link}")
     save_links_to_tsv(valid_links,broken_links)
 
 
